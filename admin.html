@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1e201d" media="(prefers-color-scheme: dark)">
+<title>إدارة المجاورة ٨٨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f2ee; --surface: #ffffff; --surface-2: #f8f7f4; --ink: #1d1f1c; --ink-2: #5d615b; --ink-3: #8b8f88;
+  --border: #e3e0d9; --focus: #1f5fbf;
+  --paid: #2f9a5a; --paid-soft: #e3f3e8; --unpaid: #d14b4b; --unpaid-soft: #fbe7e5;
+  --units: #2f6fb5; --units-soft: #e3edf8; --union: #d9921f; --union-soft: #fbefd9; --warn: #a86b00; --warn-soft: #fff4dc;
+  --shadow: 0 10px 30px rgba(30, 30, 20, .12), 0 2px 6px rgba(30, 30, 20, .08);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151614; --surface: #1e201d; --surface-2: #252723; --ink: #ecebe6; --ink-2: #b2b4ad; --ink-3: #888b84;
+    --border: #33362f; --focus: #6aa2ff;
+    --paid: #3fb371; --paid-soft: #1d3326; --unpaid: #e2615f; --unpaid-soft: #3a2120;
+    --units: #5b9be0; --units-soft: #1c2a3a; --union: #e3a53c; --union-soft: #3a2c15; --warn: #f0b54a; --warn-soft: #3a2f1a;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .45), 0 2px 6px rgba(0, 0, 0, .35);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151614; --surface: #1e201d; --surface-2: #252723; --ink: #ecebe6; --ink-2: #b2b4ad; --ink-3: #888b84;
+  --border: #33362f; --focus: #6aa2ff;
+  --paid: #3fb371; --paid-soft: #1d3326; --unpaid: #e2615f; --unpaid-soft: #3a2120;
+  --units: #5b9be0; --units-soft: #1c2a3a; --union: #e3a53c; --union-soft: #3a2c15; --warn: #f0b54a; --warn-soft: #3a2f1a;
+  --shadow: 0 10px 30px rgba(0, 0, 0, .45), 0 2px 6px rgba(0, 0, 0, .35);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans Arabic", "Geeza Pro", Tahoma, sans-serif; font-size: 15px; line-height: 1.5; overscroll-behavior-y: none; }
+[hidden] { display: none !important; }
+button, input, select, textarea { font: inherit; color: inherit; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-2); cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; }
+.btn:hover { border-color: var(--ink-3); }
+.btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn.danger { color: var(--unpaid); }
+.btn.danger.armed { background: var(--unpaid); color: #fff; border-color: var(--unpaid); }
+.btn:disabled { opacity: .5; cursor: default; }
+.btn.sm { padding: 6px 12px; font-size: 13px; }
+input[type=text], input[type=password], input[type=search], input[type=number], input[type=tel], input[type=date], select, textarea {
+  width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-2); font-size: 16px; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
+.ltr { direction: ltr; text-align: right; }
+
+/* login */
+.center { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 16px; }
+.card { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px; box-shadow: var(--shadow); }
+.card h1 { margin: 0 0 4px; font-size: 22px; }
+.card p { margin: 0 0 18px; color: var(--ink-2); font-size: 14px; }
+.check-row { display: flex; align-items: center; gap: 8px; margin: 12px 0 16px; color: var(--ink-2); font-size: 14px; cursor: pointer; }
+.err { color: var(--unpaid); font-size: 14px; min-height: 22px; margin-top: 10px; text-align: center; }
+
+/* app */
+.bar { position: sticky; top: 0; z-index: 5; background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; padding-top: max(12px, env(safe-area-inset-top)); }
+.bar-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.title { margin-inline-end: auto; }
+.title h1 { margin: 0; font-size: 19px; }
+.title p { margin: 0; color: var(--ink-2); font-size: 13px; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.dirty { background: var(--union); color: #2b1d00; border-radius: 999px; padding: 0 7px; font-size: 12px; }
+main { max-width: 1100px; margin: 0 auto; padding: 16px 20px 80px; }
+.tools { display: flex; gap: 10px; margin-bottom: 12px; }
+.tools input { flex: 1; }
+.tools select { width: auto; min-width: 160px; }
+.msg { padding: 10px 14px; border-radius: 10px; margin-bottom: 12px; font-size: 14px; background: var(--surface); border: 1px solid var(--border); }
+.msg.ok { background: var(--paid-soft); color: var(--paid); border-color: transparent; }
+.msg.bad { background: var(--unpaid-soft); color: var(--unpaid); border-color: transparent; }
+.msg.info { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+.count { color: var(--ink-2); font-size: 13px; margin: 0 0 8px; }
+.list { display: grid; gap: 8px; }
+.row { display: grid; grid-template-columns: 74px 1fr auto auto; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; border-inline-start: 4px solid var(--border); }
+.row.s-true { border-inline-start-color: var(--paid); }
+.row.s-false { border-inline-start-color: var(--unpaid); }
+.plot { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.plot small { display: block; font-size: 12px; font-weight: 500; color: var(--ink-2); }
+.name { font-weight: 700; }
+.meta { color: var(--ink-2); font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.meta a { color: var(--focus); text-decoration: none; direction: ltr; unicode-bidi: embed; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.badge { padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.b-true { background: var(--paid-soft); color: var(--paid); }
+.b-false { background: var(--unpaid-soft); color: var(--unpaid); }
+.b-null { background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--border); }
+.b-union { background: var(--union-soft); color: var(--union); }
+.b-warn { background: var(--warn-soft); color: var(--warn); }
+.empty { text-align: center; color: var(--ink-3); padding: 40px 0; }
+
+dialog { border: 0; padding: 0; border-radius: 16px; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); width: min(560px, calc(100vw - 24px)); max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); }
+dialog::backdrop { background: rgba(0, 0, 0, .45); }
+dialog form { padding: 20px 22px; display: grid; gap: 12px; overflow: auto; }
+dialog h2 { margin: 0; font-size: 18px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+label.f { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
+label.f span.hint { font-size: 12px; color: var(--ink-3); }
+.warns { font-size: 13px; color: var(--warn); }
+.dlg-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.dlg-actions .spacer { margin-inline-start: auto; }
+.code { font-family: ui-monospace, Menlo, monospace; font-size: 18px; letter-spacing: .1em; direction: ltr; }
+.small { font-size: 13px; color: var(--ink-2); margin: 0; }
+.small a { color: var(--focus); }
+
+@media (max-width: 720px) {
+  .bar { padding: 10px 14px; padding-top: max(10px, env(safe-area-inset-top)); }
+  .title p { display: none; }
+  .actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr auto; }
+  main { padding: 12px 14px 80px; }
+  .tools { flex-direction: column; }
+  .tools select { width: 100%; }
+  .row { grid-template-columns: 60px 1fr; grid-template-areas: "p m" "p b" "e e"; gap: 6px 12px; }
+  .row .plot { grid-area: p; }
+  .row .mainc { grid-area: m; }
+  .row .badges { grid-area: b; justify-content: flex-start; }
+  .row .btn { grid-area: e; width: 100%; }
+  .grid2 { grid-template-columns: 1fr; }
+  dialog { width: 100vw; max-width: 100vw; margin: auto 0 0; border-radius: 18px 18px 0 0; max-height: 92dvh; }
+}
+</style>
+</head>
+<body>
+
+<div id="login" class="center">
+  <form class="card" id="loginForm" autocomplete="off">
+    <h1>إدارة المجاورة ٨٨</h1>
+    <p>هذه الصفحة للمسؤول فقط. أدخل كلمة مرور الإدارة.</p>
+    <input type="password" id="pass" class="ltr" placeholder="XXXX-XXXX-XXXX" required aria-label="كلمة مرور الإدارة">
+    <label class="check-row"><input type="checkbox" id="rememberPass"> تذكّرني على هذا الجهاز</label>
+    <button class="btn primary" style="width:100%" type="submit">دخول</button>
+    <div class="err" id="loginErr" role="alert"></div>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <div class="bar"><div class="bar-inner">
+    <div class="title"><h1>إدارة المجاورة ٨٨</h1><p id="stat"></p></div>
+    <div class="actions">
+      <button class="btn" id="addBtn">+ إضافة</button>
+      <button class="btn" id="xlsxBtn">⤓ Excel</button>
+      <button class="btn primary" id="saveBtn" disabled>حفظ ونشر <span class="dirty" id="dirty" hidden></span></button>
+      <button class="btn" id="setBtn" aria-label="الإعدادات" title="الإعدادات">⚙︎</button>
+    </div>
+  </div></div>
+  <main>
+    <div class="msg" id="msg" hidden></div>
+    <div class="tools">
+      <input type="search" id="q" placeholder="ابحث بالاسم أو رقم القطعة أو الهاتف" autocomplete="off">
+      <select id="filter" aria-label="تصفية">
+        <option value="all">كل السجلات</option>
+        <option value="true">سدّد</option>
+        <option value="false">لم يسدّد</option>
+        <option value="null">غير معروف</option>
+        <option value="union">اتحاد ملاك</option>
+        <option value="check">تحتاج مراجعة</option>
+        <option value="noplot">بدون رقم قطعة</option>
+      </select>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="list" id="list"></div>
+  </main>
+</div>
+
+<dialog id="editDlg">
+  <form id="editForm" method="dialog" novalidate>
+    <h2 id="editTitle">تعديل</h2>
+    <div class="grid2">
+      <label class="f">رقم القطعة <input type="number" id="f-plot" min="1" max="337" inputmode="numeric"><span class="hint">من ١ إلى ٣٣٧، أو اتركه فارغًا</span></label>
+      <label class="f">الشقة <input type="text" id="f-unit" placeholder="مثال: شقة ٢"><span class="hint">للقطع المقسّمة شققًا فقط</span></label>
+    </div>
+    <label class="f">الاسم <input type="text" id="f-name" required></label>
+    <div class="grid2">
+      <label class="f">رقم الهاتف <input type="tel" id="f-phone" class="ltr" inputmode="tel" placeholder="01xxxxxxxxx"></label>
+      <label class="f">المبلغ (جنيه) <input type="number" id="f-amount" min="0" inputmode="numeric"></label>
+    </div>
+    <div class="grid2">
+      <label class="f">الحالة
+        <select id="f-paid"><option value="true">سدّد</option><option value="false">لم يسدّد</option><option value="null">غير معروف</option></select>
+      </label>
+      <label class="f">تاريخ السداد <input type="date" id="f-date"></label>
+    </div>
+    <label class="check-row" style="margin:0"><input type="checkbox" id="f-union"> اتحاد ملاك</label>
+    <label class="f">ملاحظات <textarea id="f-notes" rows="2"></textarea></label>
+    <div class="grid2">
+      <label class="f">الرقم في الدفتر <input type="number" id="f-serial" min="1" inputmode="numeric"></label>
+      <label class="check-row" style="margin:22px 0 0"><input type="checkbox" id="f-check"> تحتاج مراجعة</label>
+    </div>
+    <div class="warns" id="editWarn"></div>
+    <div class="dlg-actions">
+      <button class="btn primary" id="editOk" type="submit">حفظ التعديل</button>
+      <button class="btn" type="button" id="editCancel">إلغاء</button>
+      <span class="spacer"></span>
+      <button class="btn danger" type="button" id="editDel">حذف</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="setDlg">
+  <form id="setForm" method="dialog">
+    <h2>الإعدادات</h2>
+    <label class="f">مفتاح GitHub (للحفظ والنشر)
+      <input type="password" id="s-token" class="ltr" placeholder="github_pat_…" autocomplete="off">
+    </label>
+    <p class="small">مفتاح fine-grained للمستودع <b>mogawra-88</b> فقط، بصلاحية Contents: Read and write.
+      <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">إنشاء مفتاح</a></p>
+    <label class="check-row" style="margin:0"><input type="checkbox" id="s-remember" checked> حفظ المفتاح على هذا الجهاز</label>
+    <hr style="border:0;border-top:1px solid var(--border);width:100%">
+    <div class="f">رمز دخول الأعضاء للخريطة <div class="code" id="s-code"></div></div>
+    <div><button class="btn sm" type="button" id="s-newcode">إنشاء رمز جديد</button></div>
+    <p class="small">بعد الحفظ والنشر يتوقف الرمز القديم، ويجب إرسال الرمز الجديد للأعضاء.</p>
+    <hr style="border:0;border-top:1px solid var(--border);width:100%">
+    <label class="f">كلمة مرور إدارة جديدة (اختياري)
+      <input type="password" id="s-newpass" class="ltr" placeholder="١٠ أحرف على الأقل" autocomplete="new-password">
+    </label>
+    <div class="dlg-actions">
+      <button class="btn primary" type="submit" id="setOk">تم</button>
+      <span class="spacer"></span>
+      <button class="btn" type="button" id="logout">تسجيل الخروج</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const REPO = 'NourNafea/mogawra-88', BRANCH = 'main', API = `https://api.github.com/repos/${REPO}/contents/`;
+const ITER = 600000;
+const AR = '٠١٢٣٤٥٦٧٨٩';
+const toAr = n => String(n).replace(/[0-9]/g, d => AR[d]);
+const toEn = s => String(s ?? '').replace(/[٠-٩]/g, d => AR.indexOf(d)).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const norm = s => toEn(s).toLowerCase().replace(/[إأآا]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').replace(/[ًٌٍَُِّْـ]/g, '').trim();
+const normCode = c => String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+const PAID_TEXT = { true: 'سدّد', false: 'لم يسدّد', null: 'غير معروف' };
+const CHECK_TEXT = { name: 'الاسم', phone: 'الهاتف', plot: 'رقم القطعة', unit: 'الشقة', amount: 'المبلغ', notes: 'الملاحظات', manual: 'مراجعة' };
+const $ = id => document.getElementById(id);
+const store = {
+  get: k => { try { return localStorage.getItem(k); } catch (_) { return null; } },
+  set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (_) {} },
+};
+
+// ---------- crypto (same format as tools/data.mjs) ----------
+const b64e = bytes => { let s = ''; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(s); };
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function deriveKey(code, salt, iter) {
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(normCode(code)), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: iter, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+async function decryptBlob(blob, code) {
+  const key = await deriveKey(code, b64d(blob.salt), blob.iter);
+  const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64d(blob.iv) }, key, b64d(blob.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+async function encryptBlob(obj, code) {
+  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await deriveKey(code, salt, ITER);
+  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(obj))));
+  return { v: 1, salt: b64e(salt), iv: b64e(iv), iter: ITER, ct: b64e(ct) };
+}
+const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const randomCode = groups => Array.from({ length: groups }, () =>
+  Array.from(crypto.getRandomValues(new Uint8Array(4)), b => ALPHABET[b % ALPHABET.length]).join('')).join('-');
+
+// ---------- members view (keep in step with buildMembers in tools/data.mjs) ----------
+const PUBLIC_FIELDS = ['name', 'unit', 'amount', 'paid', 'union', 'date', 'notes', 'serial'];
+function buildMembers(rows) {
+  const owners = {}, unassigned = [];
+  for (const r of [...rows].sort((a, b) => (a.serial ?? 1e9) - (b.serial ?? 1e9))) {
+    const e = {};
+    for (const k of PUBLIC_FIELDS) { const v = r[k]; if (v === undefined || v === null || v === '' || v === false) continue; e[k] = v; }
+    e.paid = r.paid === true ? true : r.paid === false ? false : null;
+    if (r.plot) (owners[r.plot] ||= []).push(e); else unassigned.push(e);
+  }
+  return { owners, unassigned };
+}
+// Map colour of a plot, same rules as the map page.
+function plotStatus(entries) {
+  const whole = entries.filter(o => !o.unit && o.paid === true);
+  if (whole.length) return whole.every(o => o.union) ? 'اتحاد ملاك' : 'سدّد';
+  if (entries.some(o => o.unit && o.paid === true)) return 'سدّد بالشقق';
+  if (entries.some(o => o.paid === false)) return 'لم يسدّد';
+  return 'لا توجد بيانات';
+}
+
+// ---------- GitHub ----------
+let token = store.get('m88-gh-token') || '';
+const ghHeaders = () => Object.assign({ Accept: 'application/vnd.github+json' }, token ? { Authorization: 'Bearer ' + token } : {});
+async function ghGet(path) {
+  const r = await fetch(`${API}${path}?ref=${BRANCH}&_=${Date.now()}`, { headers: ghHeaders(), cache: 'no-store' });
+  if (!r.ok) throw Object.assign(new Error('GitHub ' + r.status), { status: r.status });
+  const j = await r.json();
+  return { sha: j.sha, json: JSON.parse(new TextDecoder().decode(b64d(j.content.replace(/\s/g, '')))) };
+}
+async function ghPut(path, obj, sha, message) {
+  const body = { message, branch: BRANCH, content: b64e(new TextEncoder().encode(JSON.stringify(obj))) };
+  if (sha) body.sha = sha;
+  const r = await fetch(API + path, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders()), body: JSON.stringify(body) });
+  if (!r.ok) throw Object.assign(new Error(await r.text()), { status: r.status });
+  return (await r.json()).content.sha;
+}
+
+// ---------- state ----------
+let adminPass = '', state = null, dirty = 0, pendingPass = '';
+function setDirty(n) {
+  dirty = n;
+  $('dirty').hidden = !n; $('dirty').textContent = toAr(n);
+  $('saveBtn').disabled = !n;
+}
+function msg(text, kind = 'info') {
+  const m = $('msg'); m.hidden = !text; m.className = 'msg ' + kind; m.textContent = text || '';
+}
+window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+// ---------- login ----------
+async function loadAdmin(pass) {
+  let blob;
+  try { blob = (await ghGet('data/admin.json')).json; }
+  catch (_) { const r = await fetch('data/admin.json?_=' + Date.now(), { cache: 'no-store' }); if (!r.ok) throw new Error('load'); blob = await r.json(); }
+  return decryptBlob(blob, pass);
+}
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector('button'); btn.disabled = true; btn.textContent = 'جارٍ التحقق…'; $('loginErr').textContent = '';
+  try {
+    const pass = $('pass').value;
+    state = await loadAdmin(pass);
+    adminPass = pass;
+    store.set('m88-admin', $('rememberPass').checked ? normCode(pass) : null);
+    start();
+  } catch (err) {
+    $('loginErr').textContent = err.message === 'load' ? 'تعذّر تحميل البيانات، تأكد من الاتصال' : 'كلمة المرور غير صحيحة';
+  } finally { btn.disabled = false; btn.textContent = 'دخول'; }
+});
+(async () => {
+  const saved = store.get('m88-admin');
+  if (!saved) { $('pass').focus(); return; }
+  try { state = await loadAdmin(saved); adminPass = saved; start(); } catch (_) { store.set('m88-admin', null); $('pass').focus(); }
+})();
+function start() {
+  $('login').hidden = true; $('app').hidden = false;
+  setDirty(0); render();
+  if (!token) msg('للحفظ والنشر تحتاج مفتاح GitHub مرة واحدة على هذا الجهاز: افتح ⚙︎ الإعدادات.', 'info');
+}
+
+// ---------- list ----------
+function rowMatches(r, q, f) {
+  if (f === 'true' && r.paid !== true) return false;
+  if (f === 'false' && r.paid !== false) return false;
+  if (f === 'null' && (r.paid === true || r.paid === false)) return false;
+  if (f === 'union' && !r.union) return false;
+  if (f === 'check' && !(r.check && r.check.length)) return false;
+  if (f === 'noplot' && r.plot) return false;
+  if (!q) return true;
+  const digits = q.replace(/\D/g, '');
+  return norm(r.name).includes(q) || norm(r.notes).includes(q) || String(r.plot ?? '') === q ||
+    (digits.length >= 4 && toEn(r.phone).includes(digits));
+}
+function render() {
+  const rows = state.rows;
+  const paid = rows.filter(r => r.paid === true), total = paid.reduce((a, r) => a + (Number(r.amount) || 0), 0);
+  const plots = new Set(paid.filter(r => r.plot).map(r => r.plot));
+  $('stat').textContent = `${toAr(rows.length)} سجلًا، ${toAr(plots.size)} قطعة مسدّدة من ٣٣٧، المحصَّل ${toAr(total.toLocaleString('en-US'))} جنيه`;
+  const q = norm($('q').value), f = $('filter').value;
+  const list = rows.filter(r => rowMatches(r, q, f)).sort((a, b) => (a.plot ?? 1e9) - (b.plot ?? 1e9) || String(a.unit || '').localeCompare(String(b.unit || '')));
+  $('count').textContent = list.length === rows.length ? '' : `${toAr(list.length)} من ${toAr(rows.length)}`;
+  $('list').innerHTML = list.length ? list.map(r => {
+    const p = r.paid === true ? 'true' : r.paid === false ? 'false' : 'null';
+    const meta = [
+      r.phone ? `<a href="tel:${esc(toEn(r.phone))}">${esc(r.phone)}</a>` : '',
+      r.amount != null && r.amount !== '' ? `${toAr(Number(r.amount).toLocaleString('en-US'))} جنيه` : '',
+      r.date ? esc(r.date) : '',
+      r.notes ? esc(r.notes) : '',
+    ].filter(Boolean).map(x => `<span>${x}</span>`).join('');
+    return `<article class="row s-${p}">
+      <div class="plot">${r.plot ? toAr(r.plot) : '—'}${r.unit ? `<small>${esc(r.unit)}</small>` : ''}</div>
+      <div class="mainc"><div class="name">${esc(r.name || 'بدون اسم')}</div><div class="meta">${meta}</div></div>
+      <div class="badges"><span class="badge b-${p}">${PAID_TEXT[p]}</span>${r.union ? '<span class="badge b-union">اتحاد ملاك</span>' : ''}${r.check && r.check.length ? `<span class="badge b-warn">⚠︎ ${esc(r.check.map(c => CHECK_TEXT[c] || c).join('، '))}</span>` : ''}</div>
+      <button class="btn sm" data-edit="${esc(r.id)}">تعديل</button>
+    </article>`;
+  }).join('') : '<div class="empty">لا توجد نتائج</div>';
+}
+$('q').addEventListener('input', render);
+$('filter').addEventListener('change', render);
+$('list').addEventListener('click', e => { const b = e.target.closest('[data-edit]'); if (b) openEdit(b.dataset.edit); });
+
+// ---------- edit ----------
+let editing = null;
+const F = id => $('f-' + id);
+function openEdit(id) {
+  editing = id ? state.rows.find(r => r.id === id) : null;
+  const r = editing || { paid: true, amount: 5000 };
+  $('editTitle').textContent = editing ? `تعديل: ${editing.name || ''}` : 'إضافة مالك';
+  F('plot').value = r.plot ?? ''; F('unit').value = r.unit || ''; F('name').value = r.name || '';
+  F('phone').value = r.phone || ''; F('amount').value = r.amount ?? '';
+  F('paid').value = r.paid === true ? 'true' : r.paid === false ? 'false' : 'null';
+  F('date').value = r.date || ''; F('union').checked = !!r.union; F('notes').value = r.notes || '';
+  F('serial').value = r.serial ?? ''; F('check').checked = !!(r.check && r.check.length);
+  $('editDel').hidden = !editing; $('editDel').classList.remove('armed'); $('editDel').textContent = 'حذف';
+  $('editWarn').textContent = '';
+  $('editDlg').showModal();
+  if (!editing) F('plot').focus();
+}
+$('addBtn').addEventListener('click', () => openEdit(null));
+$('editCancel').addEventListener('click', () => $('editDlg').close());
+$('editForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = F('name').value.trim();
+  const plotRaw = toEn(F('plot').value).trim(), plot = plotRaw ? Number(plotRaw) : null;
+  const errs = [];
+  if (!name) errs.push('الاسم مطلوب.');
+  if (plot !== null && !(Number.isInteger(plot) && plot >= 1 && plot <= 337)) errs.push('رقم القطعة يجب أن يكون من ١ إلى ٣٣٧.');
+  const phone = toEn(F('phone').value).replace(/[^\d+]/g, '');
+  const amountRaw = toEn(F('amount').value).trim();
+  if (errs.length) { $('editWarn').textContent = errs.join(' '); return; }
+  const unit = F('unit').value.trim();
+  // Soft warnings: shown once, the second click saves anyway.
+  const warns = [];
+  if (phone && !/^01[0125]\d{8}$/.test(phone)) warns.push('رقم الهاتف ليس ١١ رقمًا يبدأ بـ ٠١.');
+  if (plot && !unit && state.rows.some(r => r !== editing && r.plot === plot && !r.unit)) warns.push(`القطعة ${toAr(plot)} مسجّل عليها مالك آخر.`);
+  const sig = warns.join('|');
+  if (warns.length && $('editWarn').dataset.sig !== sig) { $('editWarn').textContent = warns.join(' ') + ' اضغط «حفظ التعديل» مرة أخرى للتأكيد.'; $('editWarn').dataset.sig = sig; return; }
+  $('editWarn').dataset.sig = '';
+  const r = editing || { id: 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6) };
+  const set = (k, v) => { if (v === '' || v === null || v === undefined || v === false) delete r[k]; else r[k] = v; };
+  r.name = name; r.plot = plot;
+  set('unit', unit); set('phone', phone);
+  r.amount = amountRaw === '' ? null : Number(amountRaw);
+  r.paid = F('paid').value === 'true' ? true : F('paid').value === 'false' ? false : null;
+  set('date', F('date').value); set('union', F('union').checked); set('notes', F('notes').value.trim());
+  const serial = toEn(F('serial').value).trim(); set('serial', serial ? Number(serial) : null);
+  if (F('check').checked) { if (!(r.check && r.check.length)) r.check = ['manual']; } else delete r.check;
+  r.updated = new Date().toISOString();
+  if (!editing) state.rows.push(r);
+  $('editDlg').close(); setDirty(dirty + 1); render();
+  msg('تم التعديل محليًا. اضغط «حفظ ونشر» لتظهر التغييرات على الخريطة.', 'info');
+});
+$('editDel').addEventListener('click', () => {
+  const b = $('editDel');
+  if (!b.classList.contains('armed')) { b.classList.add('armed'); b.textContent = 'تأكيد الحذف'; return; }
+  state.rows = state.rows.filter(r => r !== editing);
+  $('editDlg').close(); setDirty(dirty + 1); render();
+  msg('تم الحذف محليًا. اضغط «حفظ ونشر» لتطبيقه على الخريطة.', 'info');
+});
+
+// ---------- save & publish ----------
+$('saveBtn').addEventListener('click', async () => {
+  if (!token) { msg('أضف مفتاح GitHub من ⚙︎ الإعدادات أولًا.', 'bad'); openSettings(); return; }
+  const btn = $('saveBtn'); btn.disabled = true; const label = btn.firstChild.textContent; btn.firstChild.textContent = 'جارٍ النشر… ';
+  try {
+    // Refuse to overwrite edits made from another device since this page loaded.
+    const remote = await ghGet('data/admin.json');
+    const remoteState = await decryptBlob(remote.json, adminPass);
+    if (remoteState.updatedAt !== state.updatedAt) {
+      msg('تم تعديل البيانات من جهاز آخر بعد فتح هذه الصفحة. انسخ تعديلاتك، ثم أعد تحميل الصفحة وطبّقها من جديد.', 'bad');
+      return;
+    }
+    const next = { v: 1, memberCode: state.memberCode, rows: state.rows, updatedAt: new Date().toISOString() };
+    const passForSave = pendingPass || adminPass;
+    const members = Object.assign(buildMembers(next.rows), { updatedAt: next.updatedAt });
+    if (/01[0125]\d{8}/.test(JSON.stringify(members))) throw new Error('phone leak');
+    const membersFile = await ghGet('data/members.json').catch(() => ({ sha: null }));
+    await ghPut('data/admin.json', await encryptBlob(next, passForSave), remote.sha, 'Update owners (admin page)');
+    await ghPut('data/members.json', await encryptBlob(members, next.memberCode), membersFile.sha, 'Update map data (admin page)');
+    state.updatedAt = next.updatedAt;
+    if (pendingPass) { adminPass = pendingPass; pendingPass = ''; if (store.get('m88-admin')) store.set('m88-admin', normCode(adminPass)); }
+    setDirty(0);
+    msg('تم الحفظ والنشر. ستظهر التغييرات على الخريطة خلال دقيقة أو دقيقتين.', 'ok');
+  } catch (err) {
+    console.error(err);
+    msg(err.status === 401 || err.status === 403 ? 'مفتاح GitHub غير صالح أو بلا صلاحية كتابة. راجع ⚙︎ الإعدادات.'
+      : err.status === 409 ? 'حدث تعارض مع تعديل آخر. أعد تحميل الصفحة.'
+      : 'تعذّر النشر. تأكد من الاتصال وحاول مرة أخرى.', 'bad');
+  } finally { btn.firstChild.textContent = label; btn.disabled = !dirty; }
+});
+
+// ---------- settings ----------
+function openSettings() {
+  $('s-token').value = token; $('s-code').textContent = state.memberCode; $('s-newpass').value = '';
+  $('setDlg').showModal();
+}
+$('setBtn').addEventListener('click', openSettings);
+$('s-newcode').addEventListener('click', () => {
+  state.memberCode = randomCode(2); $('s-code').textContent = state.memberCode; setDirty(dirty + 1);
+});
+$('setForm').addEventListener('submit', e => {
+  e.preventDefault();
+  token = $('s-token').value.trim();
+  store.set('m88-gh-token', $('s-remember').checked && token ? token : null);
+  const np = $('s-newpass').value;
+  if (np) {
+    if (np.length < 10) { alert('كلمة المرور الجديدة يجب أن تكون ١٠ أحرف على الأقل.'); return; }
+    pendingPass = np; setDirty(dirty + 1);
+  }
+  $('setDlg').close();
+  msg(token ? (dirty ? 'تم حفظ الإعدادات. اضغط «حفظ ونشر» لتطبيق التغييرات.' : 'تم حفظ الإعدادات.') : 'لا يوجد مفتاح GitHub: يمكنك التعديل والتصدير، لكن لا يمكنك النشر.', token ? 'ok' : 'info');
+});
+$('logout').addEventListener('click', () => {
+  if (dirty && !confirm('لديك تعديلات غير منشورة ستضيع. هل تريد الخروج؟')) return;
+  store.set('m88-admin', null); dirty = 0; location.reload();
+});
+
+// ---------- Excel ----------
+function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+$('xlsxBtn').addEventListener('click', async () => {
+  const btn = $('xlsxBtn'), label = btn.textContent; btn.disabled = true; btn.textContent = 'جارٍ التجهيز…';
+  try {
+    if (!window.XLSX) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+    const X = window.XLSX;
+    const rows = [...state.rows].sort((a, b) => (a.plot ?? 1e9) - (b.plot ?? 1e9) || String(a.unit || '').localeCompare(String(b.unit || '')));
+    const owners = rows.map(r => ({
+      'رقم القطعة': r.plot ?? '', 'الشقة': r.unit || '', 'الاسم': r.name || '', 'الهاتف': r.phone || '',
+      'الحالة': PAID_TEXT[r.paid === true ? 'true' : r.paid === false ? 'false' : 'null'], 'اتحاد ملاك': r.union ? 'نعم' : '',
+      'المبلغ': r.amount ?? '', 'تاريخ السداد': r.date || '', 'ملاحظات': r.notes || '', 'الرقم في الدفتر': r.serial ?? '',
+      'تحتاج مراجعة': r.check && r.check.length ? r.check.map(c => CHECK_TEXT[c] || c).join('، ') : '',
+    }));
+    const ws1 = X.utils.json_to_sheet(owners);
+    ws1['!cols'] = [10, 9, 32, 15, 11, 10, 10, 13, 36, 13, 16].map(wch => ({ wch }));
+    const byPlot = {};
+    for (const r of state.rows) if (r.plot) (byPlot[r.plot] ||= []).push(r);
+    const plots = [];
+    for (let n = 1; n <= 337; n++) {
+      const es = byPlot[n] || [];
+      plots.push({ 'رقم القطعة': n, 'الحالة على الخريطة': plotStatus(es),
+        'الملاك': es.map(r => r.name + (r.unit ? ` (${r.unit})` : '')).join('، '),
+        'المبلغ المحصّل': es.filter(r => r.paid === true).reduce((a, r) => a + (Number(r.amount) || 0), 0) || '' });
+    }
+    const ws2 = X.utils.json_to_sheet(plots);
+    ws2['!cols'] = [10, 18, 50, 14].map(wch => ({ wch }));
+    const counts = {};
+    for (const p of plots) counts[p['الحالة على الخريطة']] = (counts[p['الحالة على الخريطة']] || 0) + 1;
+    const total = state.rows.filter(r => r.paid === true).reduce((a, r) => a + (Number(r.amount) || 0), 0);
+    const summary = [['البند', 'العدد'], ...Object.entries(counts), [], ['إجمالي المحصّل (جنيه)', total], ['عدد السجلات', state.rows.length],
+      ['تاريخ التصدير', new Date().toLocaleString('ar-EG')]];
+    const ws3 = X.utils.aoa_to_sheet(summary);
+    ws3['!cols'] = [{ wch: 24 }, { wch: 14 }];
+    const wb = X.utils.book_new();
+    wb.Workbook = { Views: [{ RTL: true }] };
+    X.utils.book_append_sheet(wb, ws1, 'الملاك');
+    X.utils.book_append_sheet(wb, ws2, 'كل القطع');
+    X.utils.book_append_sheet(wb, ws3, 'ملخص');
+    X.writeFile(wb, `ملاك-المجاورة-88-${new Date().toISOString().slice(0, 10)}.xlsx`);
+  } catch (err) {
+    console.error(err); msg('تعذّر تجهيز ملف Excel. تأكد من الاتصال بالإنترنت.', 'bad');
+  } finally { btn.disabled = false; btn.textContent = label; }
+});
+</script>
+</body>
+</html>
